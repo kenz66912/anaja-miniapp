@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>ANAJA - Bacaan Al-Qur'an & Tafsir</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f5f6fa;
+}
+header{
+    background:#0f9d58;
+    color:#fff;
+    padding:16px;
+    text-align:center;
+    font-weight:bold;
+}
+.container{
+    padding:16px;
+}
+.surah{
+    background:#fff;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:10px;
+    cursor:pointer;
+    box-shadow:0 2px 5px rgba(0,0,0,.08);
+}
+.surah:hover{
+    background:#f1f9f4;
+}
+.ayat{
+    background:#fff;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:10px;
+    box-shadow:0 1px 4px rgba(0,0,0,.08);
+}
+.arab{
+    font-size:22px;
+    text-align:right;
+    direction:rtl;
+}
+.artinya{
+    font-size:14px;
+    color:#444;
+    margin-top:8px;
+}
+.back{
+    color:#0f9d58;
+    margin-bottom:10px;
+    display:inline-block;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<header>ANAJA – Bacaan Al-Qur’an & Tafsir</header>
+
+<div class="container" id="app"></div>
+
+<script>
+const app = document.getElementById("app");
+
+function showSurah(){
+    app.innerHTML = `
+        <div class="surah" onclick="openSurah()">
+            Al-Fatihah
+        </div>
+    `;
+}
+
+function openSurah(){
+    app.innerHTML = `
+        <div class="back" onclick="showSurah()">← Kembali</div>
+
+        <div class="ayat">
+            <div class="arab">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            <div class="artinya">
+            Dengan nama Allah Yang Maha Pengasih, Maha Penyayang.
+            </div>
+        </div>
+
+        <div class="ayat">
+            <div class="arab">الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</div>
+            <div class="artinya">
+            Segala puji bagi Allah, Tuhan seluruh alam.
+            </div>
+        </div>
+    `;
+}
+
+showSurah();
+</script>
+
+</body>
+</html>
