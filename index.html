@@ -1,85 +1,204 @@
-<style>
-    .profile-header {
-        text-align: center;
-        padding: 30px 15px;
-        background: linear-gradient(180deg, #fff 0%, #f0f2f5 100%);
-    }
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ANAJA Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    .avatar {
-        width: 80px; height: 80px;
-        border-radius: 50%;
-        border: 3px solid #0f9d58;
-        margin-bottom: 10px;
-    }
+    <style>
+        :root {
+            --primary: #5856d6; /* Warna ungu seperti di gambar kamu */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --hint: #b2bec3;
+        }
 
-    .stats-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        padding: 15px;
-    }
+        body {
+            margin: 0; padding-bottom: 80px; /* Space untuk navbar */
+            font-family: 'Inter', sans-serif;
+            background-color: var(--tg-theme-bg-color, var(--bg-color));
+            color: var(--tg-theme-text-color, var(--text-main));
+        }
 
-    .stat-card {
-        background: #fff;
-        padding: 20px;
-        border-radius: 15px;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
+        /* Header Area */
+        header {
+            padding: 15px; text-align: center; font-weight: 700;
+            background: var(--card-bg); border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 10;
+        }
 
-    .stat-card i { font-size: 24px; color: #0f9d58; }
-    .stat-val { font-size: 20px; font-weight: bold; display: block; margin-top: 5px; }
-    .stat-label { font-size: 12px; color: #888; text-transform: uppercase; }
+        .container { padding: 15px; }
 
-    .premium-banner {
-        background: linear-gradient(90deg, #6c5ce7, #a29bfe);
-        margin: 15px;
-        padding: 20px;
-        border-radius: 15px;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+        /* Navigation Bottom */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: var(--card-bg); display: flex;
+            justify-content: space-around; align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 100;
+        }
 
-    .btn-upgrade {
-        background: #fff; color: #6c5ce7;
-        border: none; padding: 8px 20px;
-        border-radius: 20px; font-weight: bold;
-    }
-</style>
+        .nav-item {
+            text-align: center; color: var(--hint); cursor: pointer;
+            font-size: 10px; transition: 0.3s;
+        }
 
-<div id="profile-page" style="display:none;">
-    <div class="profile-header">
-        <img src="https://via.placeholder.com/80" class="avatar">
-        <h3>Muflih HILMY</h3>
-        <p style="font-size: 12px; color: #888;">Member sejak 2026</p>
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { display: block; font-size: 24px; margin-bottom: 4px; }
+
+        /* Card Styles */
+        .card {
+            background: var(--tg-theme-secondary-bg-color, var(--card-bg));
+            border-radius: 16px; padding: 15px; margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        /* Profile Section (Sesuai Gambar 2) */
+        .profile-hero { text-align: center; padding: 20px 0; }
+        .avatar-circle {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: #dfe6e9; margin: 0 auto 10px;
+            border: 3px solid var(--primary);
+        }
+
+        .stats-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+
+        .stat-box {
+            background: var(--card-bg); padding: 15px; border-radius: 12px;
+            text-align: center; border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .stat-val { display: block; font-weight: 700; font-size: 18px; color: var(--primary); }
+        .stat-lbl { font-size: 11px; color: var(--hint); text-transform: uppercase; }
+
+        /* Banner Upgrade (Sesuai Gambar 3) */
+        .banner-vip {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white; padding: 20px; border-radius: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .btn-action {
+            background: #fff; color: var(--primary); border: none;
+            padding: 8px 16px; border-radius: 20px; font-weight: 700;
+        }
+
+        /* Movie List (Sesuai Gambar 1) */
+        .movie-item {
+            display: flex; gap: 15px; margin-bottom: 15px;
+        }
+        .movie-poster {
+            width: 80px; height: 110px; border-radius: 8px;
+            background: #eee; object-fit: cover;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<header id="page-title">Beranda</header>
+
+<div class="container">
+    
+    <div id="tab-home">
+        <div class="card banner-vip">
+            <div>
+                <small>PROMO HARI INI</small>
+                <div style="font-size: 18px; font-weight:700;">Paket Sultan 20% OFF</div>
+            </div>
+            <button class="btn-action">Cek</button>
+        </div>
+
+        <h3>Terbaru</h3>
+        <div id="movie-list">
+            <div class="movie-item">
+                <img src="https://via.placeholder.com/80x110" class="movie-poster">
+                <div>
+                    <div style="font-weight:700;">Aku dan Murid Nakalku</div>
+                    <div style="font-size:12px; color:orange;">★ 5.0 | 2026</div>
+                    <p style="font-size:12px; color:#888;">Haley, siswi pintar yang ditindas...</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <span class="stat-label">Poin</span>
-            <span class="stat-val">0</span>
+    <div id="tab-profile" class="hidden">
+        <div class="profile-hero">
+            <div class="avatar-circle"></div>
+            <div style="font-weight:700; font-size:18px;">Muflih HILMY</div>
+            <div style="font-size:12px; color:var(--hint)">ID: 7110617103</div>
         </div>
-        <div class="stat-card">
-            <span class="stat-label">Komisi</span>
-            <span class="stat-val text-success">Rp 0</span>
+
+        <div class="stats-grid">
+            <div class="stat-box"><span class="stat-lbl">Poin</span><span class="stat-val">2.500</span></div>
+            <div class="stat-box"><span class="stat-lbl">Komisi</span><span class="stat-val" style="color:#00b894;">Rp 50k</span></div>
+            <div class="stat-box"><span class="stat-lbl">Teman</span><span class="stat-val">12</span></div>
+            <div class="stat-box"><span class="stat-lbl">Topup</span><span class="stat-val">3x</span></div>
         </div>
-        <div class="stat-card">
-            <span class="stat-label">Teman</span>
-            <span class="stat-val">0</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Topup Saya</span>
-            <span class="stat-val">2x</span>
+
+        <div class="card" style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
+            <span>Member Gratis</span>
+            <button class="btn-action" style="background:var(--primary); color:white;">Upgrade</button>
         </div>
     </div>
 
-    <div class="premium-banner">
-        <div>
-            <b>Member Gratis</b><br>
-            <small>Upgrade untuk akses penuh</small>
+    <div id="tab-history" class="hidden">
+        <h3>Riwayat Transaksi</h3>
+        <div class="card" style="display:flex; justify-content:space-between;">
+            <div>
+                <b>Paket VIP 1 Day</b><br>
+                <small>03 Jan 2026</small>
+            </div>
+            <div style="text-align:right;">
+                <span style="color:#ff7675;">- Rp 3.000</span><br>
+                <small style="background:#ffeaa7; padding:2px 5px; border-radius:4px;">Gagal</small>
+            </div>
         </div>
-        <button class="btn-upgrade">Upgrade</button>
+    </div>
+
+</div>
+
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab('home', 'Beranda', this)">
+        <i>🏠</i>Beranda
+    </div>
+    <div class="nav-item" onclick="switchTab('profile', 'Profil Saya', this)">
+        <i>👤</i>Profil
+    </div>
+    <div class="nav-item" onclick="switchTab('history', 'Riwayat', this)">
+        <i>🕒</i>Riwayat
     </div>
 </div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    function switchTab(tabId, title, el) {
+        // Sembunyikan semua tab
+        document.getElementById('tab-home').classList.add('hidden');
+        document.getElementById('tab-profile').classList.add('hidden');
+        document.getElementById('tab-history').classList.add('hidden');
+        
+        // Tampilkan tab yang dipilih
+        document.getElementById('tab-' + tabId).classList.remove('hidden');
+        
+        // Update header
+        document.getElementById('page-title').innerText = title;
+        
+        // Update menu aktif
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        el.classList.add('active');
+
+        // Haptic feedback biar kerasa kayak aplikasi asli
+        tg.HapticFeedback.impactOccurred('light');
+    }
+</script>
+
+</body>
+</html>
